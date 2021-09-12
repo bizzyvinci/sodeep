@@ -279,8 +279,8 @@ class sorter_exact(nn.Module):
         std1 = torch.std(comp_first).item()
         std2 = torch.std(comp_second).item()
 
-        comp_first = torch.sigmoid(comp_first * (6.8 / (std1*self.alpha)))
-        comp_second = torch.sigmoid(comp_second * (6.8 / (std2*self.alpha)))
+        comp_first = torch.sigmoid(comp_first * (6.8 / (std1+self.alpha)))
+        comp_second = torch.sigmoid(comp_second * (6.8 / (std2+self.alpha)))
 
         comp_first = torch.triu(comp_first, diagonal=1)
         comp_second = torch.triu(comp_second, diagonal=1)
