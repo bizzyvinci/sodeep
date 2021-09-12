@@ -265,8 +265,9 @@ class lstm_end(nn.Module):
 
 class sorter_exact(nn.Module):
 
-    def __init__(self):
+    def __init__(self, alpha=1e-6):
         super(sorter_exact, self).__init__()
+        self.alpha = alpha
 
     def comp(self, inpu):
         in_mat1 = torch.triu(inpu.repeat(inpu.size(0), 1), diagonal=1)
@@ -278,8 +279,8 @@ class sorter_exact(nn.Module):
         std1 = torch.std(comp_first).item()
         std2 = torch.std(comp_second).item()
 
-        comp_first = torch.sigmoid(comp_first * (6.8 / std1))
-        comp_second = torch.sigmoid(comp_second * (6.8 / std2))
+        comp_first = torch.sigmoid(comp_first * (6.8 / (std1*self.alpha)))
+        comp_second = torch.sigmoid(comp_second * (6.8 / (std2*self.alpha)))
 
         comp_first = torch.triu(comp_first, diagonal=1)
         comp_second = torch.triu(comp_second, diagonal=1)
